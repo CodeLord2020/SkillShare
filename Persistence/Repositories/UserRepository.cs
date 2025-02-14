@@ -17,34 +17,44 @@ namespace SkillShare.Persistence.Repositories
             _appDbContext = appdbContext ?? throw new ArgumentNullException(nameof(appdbContext));
         }
 
-        public Task AddUserAsync(User user)
+        public async Task AddUserAsync(User user)
         {
-            throw new NotImplementedException();
+            await _appDbContext.Users.AddAsync(user);
+            await _appDbContext.SaveChangesAsync();
         }
 
-        public Task DeleteUserAsync(Guid id)
+        public async Task DeleteUserAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var user = await _appDbContext.Users.FindAsync(id);
+            if (user != null)
+            {
+                _appDbContext.Users.Remove(user);
+                await _appDbContext.SaveChangesAsync();
+            }
         }
 
-        public Task<IEnumerable<User>> GetAllUsersAsync()
+        public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
-            throw new NotImplementedException();
+            return await  _appDbContext.Users.ToListAsync();
         }
 
-        public Task<User> GetUserByEmailAsync(string email)
+        public async Task<User> GetUserByEmailAsync(string email)
         {
-            throw new NotImplementedException();
+            var user = await _appDbContext.Users.SingleOrDefaultAsync(u => u.Email == email);
+            return user ?? throw new Exception($"User with email {email} not found.");
         }
 
-        public Task<User> GetUserByIdAsync(Guid id)
+        public async Task<User> GetUserByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var user = await _appDbContext.Users.FindAsync(id);
+            return user ?? throw new Exception($"User with id: {id} not found.");
+
         }
 
-        public Task UpdateUserAsync(User user)
+        public async Task UpdateUserAsync(User user)
         {
-            throw new NotImplementedException();
+            _appDbContext.Users.Update(user);
+            await _appDbContext.SaveChangesAsync();
         }
     }
 }
