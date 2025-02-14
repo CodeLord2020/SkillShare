@@ -10,9 +10,13 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
     
 // Add services to the container.
+// Register repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ISkillRepository, SkillRepository>();
 
+// Register services
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ISkillService, SkillService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
