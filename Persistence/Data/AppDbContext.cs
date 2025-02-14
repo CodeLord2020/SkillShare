@@ -9,6 +9,10 @@ namespace SkillShare.Persistence.Data
         {}
         
         public DbSet<User> Users { get; set; }
+        public DbSet<Trade> Trades { get; set; }
+        public DbSet<Schedule> Schedules { get; set; }
+        public DbSet<Reputation> Reputations { get; set; }
+        public DbSet<Skill> Skills { get; set; }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

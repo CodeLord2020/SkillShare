@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SkillShare.Domain.Entities;
 
-namespace SkillShare.Persistence.Configurations
+namespace SkillShare.Persistence.Configuration
 {
     public class ReputationConfiguration : IEntityTypeConfiguration<Reputation>
     {
@@ -19,7 +19,7 @@ namespace SkillShare.Persistence.Configurations
 
             // Foreign Key Relationship (One-to-One)
             builder.HasOne(r => r.User)
-                .WithOne(u => u.Reputation) // One user has one reputation
+                .WithOne(u => u.Reputation) 
                 .HasForeignKey<Reputation>(r => r.UserId)
                 .OnDelete(DeleteBehavior.Cascade) // Delete Reputation if User is deleted
                 .IsRequired();

@@ -11,6 +11,6 @@ namespace SkillShare.Domain.Entities
         public DateTime? UpdatedAt { get; set; }
 
         // Navigation properties
-        public User User { get; set; }
+        public required User User { get; set; }
     }
 }

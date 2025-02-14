@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using SkillShare.Application.Interfaces;
+using SkillShare.Domain.Entities;
 
 namespace SkillShare.Api.Controllers
 {
