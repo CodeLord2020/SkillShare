@@ -13,7 +13,7 @@ namespace SkillShare.Domain.Entities
         public string LastName { get; set; }
         public string Email { get; set; }
         public string PasswordHash { get; set; }    
-        public UserRoles Roles { get; set; }
+        public UserRoles Role { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? LastUpdatedAt { get; set;}
         public bool IsVerified { get; set; }
@@ -26,6 +26,5 @@ namespace SkillShare.Domain.Entities
         // public ICollection<Trade> TradesAsInitiator { get; set; } = new List<Trade>();
         // public ICollection<Trade> TradesAsReceiver { get; set; } = new List<Trade>();
         // public ICollection<Schedule> Schedules { get; set; } = new List<Schedule>();
-    }
     }
 }
