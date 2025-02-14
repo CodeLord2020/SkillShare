@@ -3,8 +3,18 @@ using SkillShare.Application.Interfaces;
 using SkillShare.Application.Services;
 using SkillShare.Persistence.Data;
 using SkillShare.Persistence.Repositories;
+using dotenv.net;
+
 
 var builder = WebApplication.CreateBuilder(args);
+
+DotEnv.Load(); 
+builder.Configuration["Jwt:Key"] = Environment.GetEnvironmentVariable("JWT_KEY");
+builder.Configuration["Jwt:Issuer"] = Environment.GetEnvironmentVariable("JWT_ISSUER");
+builder.Configuration["Jwt:Audience"] = Environment.GetEnvironmentVariable("JWT_AUDIENCE");
+builder.Configuration["Jwt:ExpiryInMinutes"] = Environment.GetEnvironmentVariable("JWT_EXPIRY");
+
+builder.Configuration["ConnectionStrings:DefaultConnection"] = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
