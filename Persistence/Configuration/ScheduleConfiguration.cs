@@ -1,8 +1,9 @@
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SkillShare.Domain.Entities;
 
-namespace SkillShare.Persistence.Configurations
+namespace SkillShare.Persistence.Configuration
 {
     public class ScheduleConfiguration : IEntityTypeConfiguration<Schedule>
     {
