@@ -22,9 +22,9 @@ namespace SkillShare.Domain.Entities
 
         // Navigationa Properties.
 
-        // public ICollection<SkillShare> Skills { get; set; } = new List<Skill>();
-        // public ICollection<Trade> TradesAsInitiator { get; set; } = new List<Trade>();
-        // public ICollection<Trade> TradesAsReceiver { get; set; } = new List<Trade>();
-        // public ICollection<Schedule> Schedules { get; set; } = new List<Schedule>();
+        public ICollection<Skill> Skills { get; set; } = new List<Skill>();
+        public ICollection<Trade> TradesAsInitiator { get; set; } = new List<Trade>();
+        public ICollection<Trade> TradesAsReceiver { get; set; } = new List<Trade>();
+        // public ICollection<Schedule> Schedules { get; set; } = new List<Schedule>()
     }
 }
