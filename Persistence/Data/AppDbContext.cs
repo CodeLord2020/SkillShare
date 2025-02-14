@@ -16,6 +16,8 @@ namespace SkillShare.Persistence.Data
             modelBuilder.ApplyConfiguration(new SkillConfiguration());
             modelBuilder.ApplyConfiguration(new TradeConfiguration());
             modelBuilder.ApplyConfiguration(new ScheduleConfiguration());
+            modelBuilder.ApplyConfiguration(new ReputationConfiguration());
+            
             base.OnModelCreating(modelBuilder);
         }
     }
