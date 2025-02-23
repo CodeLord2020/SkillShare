@@ -16,14 +16,15 @@ namespace SkillShare.Domain.Entities
         public DateTime? LastUpdatedAt { get; set;}
         public bool IsVerified { get; set; }
         public int ReputationScore { get; set; } = 0;
+        public string? ProfilePicture { get; set; }
+        public string? RefreshToken { get; set; } // Made nullable
+        public DateTime? RefreshTokenExpiry { get; set; } 
 
-
-        // Navigationa Properties.
+        // Navigational Properties.
         public ICollection<Skill> Skills { get; set; } = new List<Skill>();
         public ICollection<Trade> TradesAsInitiator { get; set; } = new List<Trade>();
         public ICollection<Trade> TradesAsReceiver { get; set; } = new List<Trade>();   
         public ICollection<Schedule> Schedules { get; set; } = new List<Schedule>();
         public Reputation? Reputation { get; set; }
-
     }
 }
