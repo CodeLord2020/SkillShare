@@ -1,0 +1,19 @@
+{
+    "sqltools.connections": [
+        {
+            "connectionTimeout": 15,
+            "mssqlOptions": {
+                "appName": "SQLTools",
+                "useUTC": true,
+                "encrypt": true,
+                "trustServerCertificate": false
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "driver": "MSSQL",
+            "name": ".",
+            "database": "SkillShareDb",
+            "connectString": "Server=.;Database=SkillShareDb;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=true"
+        }
+    ]
+}

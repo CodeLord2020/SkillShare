@@ -44,6 +44,15 @@ namespace SkillShare.Application.Services
             return await _userRepository.GetUserByIdAsync(id);
         }
 
+        public Task<User> GetUserByRefreshTokenAsync(string refreshToken)
+        {
+            if (string.IsNullOrEmpty(refreshToken))
+            {
+                throw new ArgumentNullException(nameof(refreshToken));
+            }
+            return _userRepository.GetUserByRefreshTokenAsync(refreshToken);
+        }
+
         public async Task UpdateUserAsync(User user)
         {
             ArgumentNullException.ThrowIfNull(user);

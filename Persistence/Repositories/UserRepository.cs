@@ -44,6 +44,12 @@ namespace SkillShare.Persistence.Repositories
             return user ?? throw new Exception($"User with email {email} not found.");
         }
 
+        public async Task<User> GetUserByRefreshTokenAsync(string refreshToken)
+        {
+            var user = await _appDbContext.Users.SingleOrDefaultAsync(u => u.RefreshToken == refreshToken);
+            return user ?? throw new Exception($"User with refresh token {refreshToken} not found.");
+        }
+
         public async Task<User> GetUserByIdAsync(Guid id)
         {
             var user = await _appDbContext.Users.FindAsync(id);
