@@ -7,23 +7,24 @@ namespace SkillShare.Domain.ValueObjects
 {
     public class TimeSlot
     {
-        public DateTime Start { get; }
-        public DateTime End { get; }
-
-        public TimeSlot(DateTime start, DateTime end)
+        private TimeSlot() { }
+         public TimeSlot(DateTime startTime, DateTime endTime)
         {
-            if (start >= end)
+            if (startTime >= endTime)
             {
                 throw new ArgumentException("Start time must be before end time.");
             }
 
-            Start = start;
-            End = end;
+            StartTime = startTime;
+            EndTime = endTime;
         }
 
-        public bool OverlapsWith(TimeSlot other)
+        public DateTime StartTime { get; private set; }
+        public DateTime EndTime { get; private set; }
+
+        public bool Overlaps(TimeSlot other)
         {
-            return Start < other.End && End > other.Start;
+            return StartTime < other.EndTime && EndTime > other.StartTime;
         }
     }
 }
