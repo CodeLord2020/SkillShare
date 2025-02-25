@@ -7,8 +7,10 @@ using dotenv.net;
 using Microsoft.AspNetCore.Identity;
 using SkillShare.Domain.Entities;
 using System.Text;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using SkillShare.Application.EventHandlers;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -39,6 +41,10 @@ builder.Services.AddScoped<ISkillService, SkillService>();
 builder.Services.AddScoped<ITradeService, TradeService>();
 builder.Services.AddScoped<IScheduleService, ScheduleService>();
 builder.Services.AddScoped<IReputationService, ReputationService>();
+
+// Register event handlers
+builder.Services.AddMediatR(typeof(TradeCompletedEventHandler));
+builder.Services.AddMediatR(typeof(ReputationUpdatedEventHandler));
 
 // Register Identity
 builder.Services.AddIdentity<User, IdentityRole<Guid>>(options =>

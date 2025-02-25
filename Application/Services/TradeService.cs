@@ -1,18 +1,23 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MediatR;
 using SkillShare.Application.Interfaces;
 using SkillShare.Domain.Entities;
+using SkillShare.Domain.Enums;
+using SkillShare.Domain.Events;
 
 namespace SkillShare.Application.Services
 {
     public class TradeService : ITradeService
     {
         private readonly ITradeRepository _tradeRepository;
+        private readonly IMediator _mediator;
 
-        public TradeService(ITradeRepository tradeRepository)
+        public TradeService(ITradeRepository tradeRepository, IMediator mediator)
         {
             _tradeRepository = tradeRepository ?? throw new ArgumentNullException(nameof(tradeRepository));
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
         public async Task<IEnumerable<Trade>> GetAllTradesAsync()
@@ -48,6 +53,11 @@ namespace SkillShare.Application.Services
             }
 
             await _tradeRepository.UpdateTradeAsync(trade);
+            // Raise TradeCompletedEvent if the trade is marked as completed
+            if (trade.Status == TradeStatus.Completed)
+            {
+                await _mediator.Publish(new TradeCompletedEvent(trade));
+            }
         }
 
         public async Task DeleteTradeAsync(Guid id)
