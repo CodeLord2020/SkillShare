@@ -11,8 +11,8 @@ namespace SkillShare.Persistence.Configuration
         {
             builder.HasKey(s => s.Id); // Primary Key
 
-            builder.Property(s => s.StartTime).IsRequired();
-            builder.Property(s => s.EndTime).IsRequired();
+            // builder.Property(s => s.StartTime).IsRequired();
+            // builder.Property(s => s.EndTime).IsRequired();
             builder.Property(s => s.IsAvailable).HasDefaultValue(true);
             builder.Property(s => s.CreatedAt).IsRequired();
             builder.Property(s => s.UpdatedAt).IsRequired(false);

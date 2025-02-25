@@ -18,10 +18,19 @@ namespace SkillShare.Persistence.Data
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Schedule>(entity =>
+            {
+                entity.OwnsOne(s => s.TimeSlot, ts =>
+                {
+                    ts.Property(t => t.StartTime).HasColumnName("StartTime");
+                    ts.Property(t => t.EndTime).HasColumnName("EndTime");
+                });
+            });
+            
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new SkillConfiguration());
             modelBuilder.ApplyConfiguration(new TradeConfiguration());
-            modelBuilder.ApplyConfiguration(new ScheduleConfiguration());
+            // modelBuilder.ApplyConfiguration(new ScheduleConfiguration());
             modelBuilder.ApplyConfiguration(new ReputationConfiguration());
             
             base.OnModelCreating(modelBuilder);
