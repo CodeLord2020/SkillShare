@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SkillShare.Domain.Entities
 {
-    public class Addon
+    public class AddOn
     {
         public Guid Id { get; set; }
         public required string Name { get; set; }
