@@ -18,7 +18,18 @@ namespace SkillShare.Persistence.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<UserAddOn>> GetUserAddOnsByUserIdAsync(Guid userId)
+        public async Task<IEnumerable<UserAddOn>> GetAllUserAddOnsAsync()
+        {
+            return await _context.UserAddOns.ToListAsync();
+        }
+
+        public async Task<UserAddOn> GetUserAddOnByIdAsync(Guid id)
+        {
+            var userAddOn = await _context.UserAddOns.FindAsync(id) ?? throw new KeyNotFoundException($"UserAddOn with id {id} not found.");
+            return userAddOn;
+        }
+
+        public async Task<IEnumerable<UserAddOn>> GetUserAddOnsByUserIdAsync(Guid userId) 
         {
             return await _context.UserAddOns
                 .Where(ua => ua.UserId == userId)
@@ -28,6 +39,12 @@ namespace SkillShare.Persistence.Repositories
         public async Task AddUserAddOnAsync(UserAddOn userAddOn)
         {
             await _context.UserAddOns.AddAsync(userAddOn);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateUserAddOnAsync(UserAddOn userAddOn)
+        {
+            _context.UserAddOns.Update(userAddOn);
             await _context.SaveChangesAsync();
         }
 
