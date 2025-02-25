@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SkillShare.Application.Interfaces;
 using SkillShare.Domain.Entities;
+using SkillShare.Domain.ValueObjects;
 using SkillShare.Persistence.Data;
 
 namespace SkillShare.Persistence.Repositories
@@ -32,6 +33,13 @@ namespace SkillShare.Persistence.Repositories
         {
             return await _appDbContext.Schedules
                 .Where(s => s.UserId == userId)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Schedule>> GetAvailableSchedulesAsync(TimeSlot timeSlot)
+        {
+            return await _appDbContext.Schedules
+                .Where(s => s.IsAvailable && s.TimeSlot != null && s.TimeSlot.Overlaps(timeSlot))
                 .ToListAsync();
         }
 
