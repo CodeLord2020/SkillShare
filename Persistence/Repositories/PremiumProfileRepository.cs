@@ -23,11 +23,7 @@ namespace SkillShare.Persistence.Repositories
 
         public async Task<PremiumProfile> GetPremiumProfileByIdAsync(Guid id)
         {
-            var profile = await _context.PremiumProfiles.FindAsync(id);
-            if (profile == null)
-            {
-                throw new InvalidOperationException($"No profile found for ID {id}");
-            }
+            var profile = await _context.PremiumProfiles.FindAsync(id) ?? throw new InvalidOperationException($"No profile found for ID {id}");
             return profile;
         }
 
@@ -35,11 +31,7 @@ namespace SkillShare.Persistence.Repositories
         {
             var profile = await _context.PremiumProfiles
                 .SingleOrDefaultAsync(p => p.UserId == userId);
-            if (profile == null)
-            {
-                throw new InvalidOperationException($"No profile found for user ID {userId}");
-            }
-            return profile;
+            return profile == null ? throw new InvalidOperationException($"No profile found for user ID {userId}") : profile;
         }
 
         public async Task AddPremiumProfileAsync(PremiumProfile premiumProfile)
