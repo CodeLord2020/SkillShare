@@ -7,6 +7,9 @@ namespace SkillShare.Domain.Entities
 {
     public class Addon
     {
-        
+        public Guid Id { get; set; }
+        public required string Name { get; set; }
+        public string? Description { get; set; }
+        public decimal Price { get; set; }
     }
 }
