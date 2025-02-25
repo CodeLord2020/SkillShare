@@ -34,6 +34,9 @@ builder.Services.AddScoped<ISkillRepository, SkillRepository>();
 builder.Services.AddScoped<ITradeRepository, TradeRepository>();
 builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>();
 builder.Services.AddScoped<IReputationRepository, ReputationRepository>();
+builder.Services.AddScoped<IPremiumProfileRepository, PremiumProfileRepository>();
+builder.Services.AddScoped<IAddOnRepository, AddOnRepository>();
+builder.Services.AddScoped<IUserAddOnRepository, UserAddOnRepository>();
 
 // Register services
 builder.Services.AddScoped<IUserService, UserService>();
