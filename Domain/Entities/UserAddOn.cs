@@ -14,6 +14,6 @@ namespace SkillShare.Domain.Entities
 
         // Navigation properties
         public required User User { get; set; }
-        public AddOn? AddOn { get; set; }
+        public required AddOn AddOn { get; set; }
     }
 }
