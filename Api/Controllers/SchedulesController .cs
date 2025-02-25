@@ -43,6 +43,13 @@ namespace SkillShare.Api.Controllers
             return Ok(schedules);
         }
 
+        [HttpGet("available")]
+        public async Task<ActionResult<IEnumerable<Schedule>>> GetAvailableSchedules(DateTime startTime, DateTime endTime)
+        {
+            var schedules = await _scheduleService.GetAvailableSchedulesAsync(startTime, endTime);
+            return Ok(schedules);
+        }
+
         [HttpPost]
         public async Task<ActionResult<Schedule>> AddSchedule([FromBody] Schedule schedule)
         {
