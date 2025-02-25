@@ -6,7 +6,7 @@ using SkillShare.Domain.Entities;
 
 namespace SkillShare.Application.Interfaces
 {
-    public interface IPremiumProfileRepository
+    public interface IPremiumProfileService
     {
         Task<IEnumerable<PremiumProfile>> GetAllPremiumProfilesAsync();
         Task<PremiumProfile> GetPremiumProfileByIdAsync(Guid id);
@@ -14,5 +14,7 @@ namespace SkillShare.Application.Interfaces
         Task AddPremiumProfileAsync(PremiumProfile premiumProfile);
         Task UpdatePremiumProfileAsync(PremiumProfile premiumProfile);
         Task DeletePremiumProfileAsync(Guid id);
+
+        
     }
 }
