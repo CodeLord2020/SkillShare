@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SkillShare.Persistence.Data;
 
@@ -11,9 +12,11 @@ using SkillShare.Persistence.Data;
 namespace SkillShare.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250225114246_PremiumAndAddOn")]
+    partial class PremiumAndAddOn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -167,12 +170,11 @@ namespace SkillShare.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
-                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("AddOns");
+                    b.ToTable("AddOn");
                 });
 
             modelBuilder.Entity("SkillShare.Domain.Entities.PremiumProfile", b =>
@@ -197,7 +199,7 @@ namespace SkillShare.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("PremiumProfiles");
+                    b.ToTable("PremiumProfile");
                 });
 
             modelBuilder.Entity("SkillShare.Domain.Entities.Reputation", b =>
@@ -470,7 +472,7 @@ namespace SkillShare.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserAddOns");
+                    b.ToTable("UserAddOn");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
