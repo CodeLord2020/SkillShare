@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using SkillShare.Application.Interfaces;
 using SkillShare.Domain.Entities;
+using SkillShare.Domain.ValueObjects;
 
 namespace SkillShare.Application.Services
 {
@@ -30,6 +31,11 @@ namespace SkillShare.Application.Services
             return await _scheduleRepository.GetSchedulesByUserIdAsync(userId);
         }
 
+        public async Task<IEnumerable<Schedule>> GetAvailableSchedulesAsync(DateTime startTime, DateTime endTime)
+        {
+            var timeSlot = new TimeSlot(startTime, endTime);
+            return await _scheduleRepository.GetAvailableSchedulesAsync(timeSlot);
+        }
         public async Task AddScheduleAsync(Schedule schedule)
         {
             if (schedule == null)
