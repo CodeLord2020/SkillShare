@@ -1,0 +1,33 @@
+SkillShare is a time-based economy platform where users trade skills and services using time as currency. Built with .NET 8 and VS Code, it features user authentication, skill trading, scheduling, reputation tracking, and premium profiles. The project follows clean architecture principles, with DTOs, mappers, and pagination for efficient data handling. Caching and monitoring are implemented for performance optimization.
+
+Features
+User Authentication: JWT-based authentication.
+
+Skill Trading: Trade skills based on time.
+
+Scheduling: Built-in calendar for availability.
+
+Reputation Tracking: Track user reputation.
+
+Premium Profiles: Monetization through premium features (STRIPE).
+
+Tech Stack
+Backend: .NET 8, Entity Framework Core, Serilog, Application Insights.
+
+Frontend: (To be implemented). Won't Be by me sha.
+
+Database: SQL Server.
+
+Setup
+Clone the repo: git clone https://github.com/CodeLord2020/SkillShare.git
+
+Set up the database: Update appsettings.json with your connection string.
+
+Run migrations: dotnet ef database update
+
+Start the app: dotnet run
+
+Contribute
+Feel free to fork, open issues, or submit PRs.
+
+By CodeLord2020
