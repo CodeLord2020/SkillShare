@@ -17,7 +17,7 @@ namespace SkillShare.Application.Services
             StripeConfiguration.ApiKey =  _configuration.GetSection("Stripe")["SecretKey"];
             
         }
-        public async Task<string> CraeteCheckoutSessionAsync(decimal amount, string currency, 
+        public async Task<string> CreateCheckoutSessionAsync(decimal amount, string currency, 
         string successUrl, string cancelUrl)
         {
             var options = new SessionCreateOptions
