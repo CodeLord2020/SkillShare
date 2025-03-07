@@ -13,11 +13,14 @@ namespace SkillShare.Application.Services
     {
         private readonly ITradeRepository _tradeRepository;
         private readonly IMediator _mediator;
+        private readonly IEmailService _emailService;
 
-        public TradeService(ITradeRepository tradeRepository, IMediator mediator)
+        public TradeService(ITradeRepository tradeRepository, IMediator mediator, IEmailService emailService)
         {
             _tradeRepository = tradeRepository ?? throw new ArgumentNullException(nameof(tradeRepository));
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
+
         }
 
         public async Task<IEnumerable<Trade>> GetAllTradesAsync()
@@ -57,6 +60,14 @@ namespace SkillShare.Application.Services
             if (trade.Status == TradeStatus.Completed)
             {
                 await _mediator.Publish(new TradeCompletedEvent(trade));
+                var trade_initiator_Email = trade.Initiator.Email ?? throw new ArgumentNullException(nameof(trade.Initiator.Email));
+                var trade_Receiver_Email = trade.Receiver.Email ?? throw new ArgumentNullException(nameof(trade.Receiver.Email));  
+
+                var subject = "Trade Completed";
+                var plainTextContent = $"Your trade with {trade.Receiver.Email} has been completed.";
+                var htmlContent = $"<p>Your trade with {trade.Receiver.Email} has been completed.</p>";
+                await _emailService.SendEmailAsync(trade_initiator_Email, subject, plainTextContent, htmlContent);
+                await _emailService.SendEmailAsync(trade_Receiver_Email, subject, plainTextContent, htmlContent);
             }
         }
 

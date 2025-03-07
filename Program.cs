@@ -11,17 +11,24 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using SkillShare.Application.EventHandlers;
-
+using SendGrid;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
 DotEnv.Load(); 
 builder.Configuration["Jwt:Key"] = Environment.GetEnvironmentVariable("JWT_KEY");
 builder.Configuration["Jwt:Issuer"] = Environment.GetEnvironmentVariable("JWT_ISSUER");
+builder.Configuration["Stripe:SecretKey"] = Environment.GetEnvironmentVariable("SecretKey");
+builder.Configuration["SendGrid:ApiKey"] = Environment.GetEnvironmentVariable("ApiKey");
+builder.Configuration["Stripe:PublishableKey"] = Environment.GetEnvironmentVariable("PublishableKey");
 builder.Configuration["Jwt:Audience"] = Environment.GetEnvironmentVariable("JWT_AUDIENCE");
 builder.Configuration["Jwt:ExpiryInMinutes"] = Environment.GetEnvironmentVariable("JWT_EXPIRY");
-
 builder.Configuration["ConnectionStrings:DefaultConnection"] = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+
+
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
+builder.Services.AddSingleton<ISendGridClient>(new SendGridClient(builder.Configuration["SendGrid:ApiKey"]));
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -44,6 +51,11 @@ builder.Services.AddScoped<ISkillService, SkillService>();
 builder.Services.AddScoped<ITradeService, TradeService>();
 builder.Services.AddScoped<IScheduleService, ScheduleService>();
 builder.Services.AddScoped<IReputationService, ReputationService>();
+
+// Register payment service
+builder.Services.AddScoped<IPaymentService, StripePaymentService>();
+// Register email service
+builder.Services.AddScoped<IEmailService, SendGridEmailService>();
 
 // Register event handlers
 builder.Services.AddMediatR(typeof(TradeCompletedEventHandler));
@@ -87,6 +99,21 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+
+// Enable CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        policy =>
+        {
+            // policy.WithOrigins("http://localhost:3000")
+            policy.AllowAnyOrigin()
+                  .AllowAnyMethod()
+                  .AllowAnyHeader();
+                //   .AllowCredentials(); // Only if using cookies/authentication
+        });
+});
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -103,6 +130,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors("AllowSpecificOrigin");
 app.UseAuthentication();
 app.UseAuthorization();
 
