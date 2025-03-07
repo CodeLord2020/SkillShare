@@ -18,6 +18,8 @@ var builder = WebApplication.CreateBuilder(args);
 DotEnv.Load(); 
 builder.Configuration["Jwt:Key"] = Environment.GetEnvironmentVariable("JWT_KEY");
 builder.Configuration["Jwt:Issuer"] = Environment.GetEnvironmentVariable("JWT_ISSUER");
+builder.Configuration["Stripe:SecretKey"] = Environment.GetEnvironmentVariable("SecretKey");
+builder.Configuration["Stripe:PublishableKey"] = Environment.GetEnvironmentVariable("PublishableKey");
 builder.Configuration["Jwt:Audience"] = Environment.GetEnvironmentVariable("JWT_AUDIENCE");
 builder.Configuration["Jwt:ExpiryInMinutes"] = Environment.GetEnvironmentVariable("JWT_EXPIRY");
 
