@@ -11,7 +11,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using SkillShare.Application.EventHandlers;
-
+using SendGrid;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 

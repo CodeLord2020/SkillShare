@@ -1,8 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Stripe;
 using SkillShare.Application.Interfaces;
+using SkillShare.Domain.Entities;
+using System;
+using System.Threading.Tasks;
+using Stripe.Checkout;
+
 
 namespace SkillShare.Application.Services
 {
@@ -16,7 +18,7 @@ namespace SkillShare.Application.Services
             
         }
         public async Task<string> CraeteCheckoutSessionAsync(decimal amount, string currency, 
-        string suceessUrl, string cancelUrl)
+        string successUrl, string cancelUrl)
         {
             var options = new SessionCreateOptions
             {

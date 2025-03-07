@@ -7,18 +7,18 @@ namespace SkillShare.Application.Services
 {
     public class SendGridEmailService : IEmailService
     {
-         private readonly ISendGridClient _sendGridClient;
+        private readonly ISendGridClient _sendGridClient;
         private readonly string _fromEmail;
         private readonly string _fromName;
-
-    }
 
     public SendGridEmailService(ISendGridClient sendGridClient, IConfiguration configuration)
         {
             _sendGridClient = sendGridClient;
-            _fromEmail = configuration["SendGrid:FromEmail"];
-            _fromName = configuration["SendGrid:FromName"];
+            _fromEmail = configuration.GetSection("SendGrid")["FromEmail"] ?? throw new ArgumentNullException("SendGrid:FromEmail");
+
+            _fromName = configuration["SendGrid:FromName"] ?? throw new ArgumentNullException("SendGrid:FromName");
         }
+
 
     public async Task SendEmailAsync(string toEmail, string subject, string plainTextContent, string htmlContent)
         {
