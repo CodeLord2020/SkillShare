@@ -52,6 +52,11 @@ builder.Services.AddScoped<ITradeService, TradeService>();
 builder.Services.AddScoped<IScheduleService, ScheduleService>();
 builder.Services.AddScoped<IReputationService, ReputationService>();
 
+// Register payment service
+builder.Services.AddScoped<IPaymentService, StripePaymentService>();
+// Register email service
+builder.Services.AddScoped<IEmailService, SendGridEmailService>();
+
 // Register event handlers
 builder.Services.AddMediatR(typeof(TradeCompletedEventHandler));
 builder.Services.AddMediatR(typeof(ReputationUpdatedEventHandler));
