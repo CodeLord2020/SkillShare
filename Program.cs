@@ -19,11 +19,15 @@ DotEnv.Load();
 builder.Configuration["Jwt:Key"] = Environment.GetEnvironmentVariable("JWT_KEY");
 builder.Configuration["Jwt:Issuer"] = Environment.GetEnvironmentVariable("JWT_ISSUER");
 builder.Configuration["Stripe:SecretKey"] = Environment.GetEnvironmentVariable("SecretKey");
+builder.Configuration["SendGrid:ApiKey"] = Environment.GetEnvironmentVariable("ApiKey");
 builder.Configuration["Stripe:PublishableKey"] = Environment.GetEnvironmentVariable("PublishableKey");
 builder.Configuration["Jwt:Audience"] = Environment.GetEnvironmentVariable("JWT_AUDIENCE");
 builder.Configuration["Jwt:ExpiryInMinutes"] = Environment.GetEnvironmentVariable("JWT_EXPIRY");
-
 builder.Configuration["ConnectionStrings:DefaultConnection"] = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+
+
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
+builder.Services.AddSingleton<ISendGridClient>(new SendGridClient(builder.Configuration["SendGrid:ApiKey"]));
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
