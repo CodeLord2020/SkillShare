@@ -13,6 +13,9 @@ using Microsoft.IdentityModel.Tokens;
 using SkillShare.Application.EventHandlers;
 using SendGrid;
 using Stripe;
+using Serilog;
+using Serilog.Events;
+using Serilog.Formatting.Compact;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +28,15 @@ builder.Configuration["Stripe:PublishableKey"] = Environment.GetEnvironmentVaria
 builder.Configuration["Jwt:Audience"] = Environment.GetEnvironmentVariable("JWT_AUDIENCE");
 builder.Configuration["Jwt:ExpiryInMinutes"] = Environment.GetEnvironmentVariable("JWT_EXPIRY");
 builder.Configuration["ConnectionStrings:DefaultConnection"] = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+builder.Configuration["Serilog:WriteTo:1:connectionString"] = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
 
+
+// Configure Serilog
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .CreateLogger();
+
+builder.Host.UseSerilog();
 
 StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
 builder.Services.AddSingleton<ISendGridClient>(new SendGridClient(builder.Configuration["SendGrid:ApiKey"]));
