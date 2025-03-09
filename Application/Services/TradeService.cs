@@ -12,13 +12,15 @@ namespace SkillShare.Application.Services
         private readonly ITradeRepository _tradeRepository;
         private readonly IMediator _mediator;
         private readonly IEmailService _emailService;
+        private readonly ILogger<TradeService> _logger;
 
-        public TradeService(ITradeRepository tradeRepository, IMediator mediator, IEmailService emailService)
+        public TradeService(ITradeRepository tradeRepository, IMediator mediator,
+         IEmailService emailService, ILogger<TradeService> logger)
         {
             _tradeRepository = tradeRepository ?? throw new ArgumentNullException(nameof(tradeRepository));
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
-
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task<IEnumerable<Trade>> GetAllTradesAsync()
@@ -40,6 +42,7 @@ namespace SkillShare.Application.Services
         {
             if (trade == null)
             {
+                _logger.LogError("Trade is null");
                 throw new ArgumentNullException(nameof(trade));
             }
 
@@ -50,13 +53,17 @@ namespace SkillShare.Application.Services
         {
             if (trade == null)
             {
+                _logger.LogError("Trade is null");
                 throw new ArgumentNullException(nameof(trade));
             }
 
             await _tradeRepository.UpdateTradeAsync(trade);
+            _logger.LogInformation("Updating trade with id: {tradeId}", trade.Id);
+
             // Raise TradeCompletedEvent if the trade is marked as completed
             if (trade.Status == TradeStatus.Completed)
             {
+                _logger.LogInformation("Trade with id: {tradeId} is completed", trade.Id);
                 await _mediator.Publish(new TradeCompletedEvent(trade));
                 var trade_initiator_Email = trade.Initiator.Email ?? throw new ArgumentNullException(nameof(trade.Initiator.Email));
                 var trade_Receiver_Email = trade.Receiver.Email ?? throw new ArgumentNullException(nameof(trade.Receiver.Email));  
