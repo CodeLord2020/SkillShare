@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using SkillShare.Application.DTOs;
 using SkillShare.Domain.Entities;
 using SkillShare.Domain.Enums;
+using BCrypt.Net;
 
 namespace SkillShare.Application.Mapping
 {
