@@ -25,21 +25,39 @@ namespace SkillShare.Application.Mapping
                 ReputationScore = 0 // Default reputation score
             };
         }
-    }
 
-    public static UserResponseDto ToResponseDto(this User user)
-        {
-            return new UserResponseDto
+        public static UserResponseDto ToResponseDto(this User user)
             {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email ?? " ",
-                Role = user.Role,
-                CreatedAt = user.CreatedAt,
-                LastUpdatedAt = user.LastUpdatedAt,
-                IsVerified = user.IsVerified,
-                ReputationScore = user.ReputationScore
-            };
-        }
+                return new UserResponseDto
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email ?? " ",
+                    Role = user.Role,
+                    CreatedAt = user.CreatedAt,
+                    LastUpdatedAt = user.LastUpdatedAt,
+                    IsVerified = user.IsVerified,
+                    ReputationScore = user.ReputationScore
+                };
+            }
+
+        // Apply updates from UserUpdateDto to User entity
+            public static void ApplyUpdate(this User user, UserUpdateDto dto)
+            {
+                if (!string.IsNullOrEmpty(dto.FirstName))
+                    user.FirstName = dto.FirstName;
+
+                if (!string.IsNullOrEmpty(dto.LastName))
+                    user.LastName = dto.LastName;
+
+                if (!string.IsNullOrEmpty(dto.Email))
+                    user.Email = dto.Email;
+
+                if (!string.IsNullOrEmpty(dto.Password))
+                    user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
+
+                user.LastUpdatedAt = DateTime.UtcNow;
+            }
+    }
 }
