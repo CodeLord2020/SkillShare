@@ -28,7 +28,7 @@ builder.Configuration["Stripe:PublishableKey"] = Environment.GetEnvironmentVaria
 builder.Configuration["Jwt:Audience"] = Environment.GetEnvironmentVariable("JWT_AUDIENCE");
 builder.Configuration["Jwt:ExpiryInMinutes"] = Environment.GetEnvironmentVariable("JWT_EXPIRY");
 builder.Configuration["ConnectionStrings:DefaultConnection"] = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
-builder.Configuration["Serilog:WriteTo:1:connectionString"] = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+builder.Configuration["Serilog:WriteTo:2:Args:connectionString"] = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
 
 
 // Configure Serilog

@@ -2,9 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using SkillShare.Application.DTOs;
 using SkillShare.Application.Interfaces;
+using SkillShare.Application.Mapping;
 using SkillShare.Application.Services;
+using SkillShare.Application.Utilities;
 using SkillShare.Domain.Entities;
 
 namespace SkillShare.Api.Controllers
@@ -17,14 +21,19 @@ namespace SkillShare.Api.Controllers
         public UsersController(IUserService userService)
         {
             _userService = userService ??
-             throw new ArgumentNullException(nameof(userService));;
+             throw new ArgumentNullException(nameof(userService));
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
+        public async Task<ActionResult<Pagination<UserResponseDto>>> GetAllUsers(
+            [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
             var users = await _userService.GetAllUsersAsync();
-            return Ok(users);
+        
+            var paginatedUsers = await users
+                .Select(u => u.ToResponseDto())
+                .ToPaginationAsync(pageNumber, pageSize);
+            return Ok(paginatedUsers);
         }
 
         [HttpGet("{id}")]
@@ -62,13 +71,11 @@ namespace SkillShare.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateUser(Guid id, [FromBody] User user)
+        public async Task<ActionResult> UpdateUser(Guid id, [FromBody] UserUpdateDto dto)
         {
-            if (user == null || user.Id != id)
-            {
-                return BadRequest();
-            }
-
+            var user = await _userService.GetUserByIdAsync(id) ?? 
+            throw new Exception($"User with id: {id} not found.");
+            user.ApplyUpdate(dto);
             await _userService.UpdateUserAsync(user);
             return NoContent();
         }
