@@ -4,17 +4,33 @@ namespace SkillShare.Application.Utilities
 {
     public static class PaginationExtensions
     {
-         public static async Task<Pagination<T>> ToPaginationAsync<T>(
-            this IQueryable<T> query, int pageNumber, int pageSize)
-
+        public static Pagination<T> ToPagination<T>(
+            this IEnumerable<T> source, 
+            int pageNumber, 
+            int pageSize)
         {
-            var totalCount = await query.CountAsync();
-            var items = await query
+            var count = source.Count();
+            var items = source
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .ToListAsync();
+                .ToList();
 
-            return new Pagination<T>(pageNumber, pageSize, totalCount, items);
+            return new Pagination<T>
+            {
+                Items = items,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                TotalCount = count,
+                TotalPages = (int)Math.Ceiling(count / (double)pageSize)
+            };
+        }
+
+        public static async Task<Pagination<T>> ToPaginationAsync<T>(
+            this IEnumerable<T> source,
+            int pageNumber,
+            int pageSize)
+        {
+            return await Task.FromResult(source.ToPagination(pageNumber, pageSize));
         }
     }
 }
