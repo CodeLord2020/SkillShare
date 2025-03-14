@@ -4,8 +4,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using SkillShare.Application.DTOs;
 using SkillShare.Application.Interfaces;
+using SkillShare.Application.Mapping;
 using SkillShare.Domain.Entities;
-using SkillShare.Domain.Enums;
+using SkillShare.Api.Controllers;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -30,35 +31,41 @@ namespace SkillShare.Api.Controllers
             _userService = userService; 
         }
 
-        [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterModel model)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<User>> GetUserByIdAuth(Guid id)
         {
-            var user = new User
+            var user = await _userService.GetUserByIdAsync(id);
+            if (user == null)
             {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                Email = model.Email,
-                UserName = model.Email
-                
-            };
-            if (model.Role != null && Enum.TryParse<UserRoles>(model.Role, out var role))
-            {
-                user.Role = role;
+                return NotFound();
             }
-            else
-            {
-                user.Role = UserRoles.User;
-            }
+            return Ok(user);
+        }
 
-            var result = await _userManager.CreateAsync(user, model.Password);
-            if (result.Succeeded)
-            {
-                return Ok(new { Message = "User created successfully" });
-            }
-            else
-            {
-                return BadRequest(new { Message = "User creation failed", Errors = result.Errors });
-            }
+        [HttpPost("register")]
+        public async Task<ActionResult<UserResponseDto>> Register([FromBody]  UserRegistrationDto dto)
+        {
+            var user = dto.ToEntity();
+            await _userService.AddUserAsync(user);
+            // if (model.Role != null && Enum.TryParse<UserRoles>(model.Role, out var role))
+            // {
+            //     user.Role = role;
+            // }
+            // else
+            // {
+            //     user.Role = UserRoles.User;
+            // }
+
+            // var result = await _userManager.CreateAsync(user, model.Password);
+            // if (result.Succeeded)
+            // {
+            //     return Ok(new { Message = "User created successfully" });
+            // }
+            // else
+            // {
+            //     return BadRequest(new { Message = "User creation failed", Errors = result.Errors });
+            // }
+            return CreatedAtAction(nameof(GetUserByIdAuth), new { id = user.Id }, user.ToResponseDto());
 
         }
 
