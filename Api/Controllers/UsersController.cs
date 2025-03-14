@@ -28,10 +28,8 @@ namespace SkillShare.Api.Controllers
         public async Task<ActionResult<Pagination<UserResponseDto>>> GetAllUsers(
             [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
-             // First await the users
             var users = await _userService.GetAllUsersAsync();
-            
-            // Then apply the Select transformation and pagination
+        
             var paginatedUsers = await users
                 .Select(u => u.ToResponseDto())
                 .ToPaginationAsync(pageNumber, pageSize);
